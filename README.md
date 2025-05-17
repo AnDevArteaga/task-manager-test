@@ -69,13 +69,11 @@ npm install
 ### 3. Crear archivo `.env`
 
 Crea un archivo `.env` en la raíz del proyecto y agrega las siguientes variables de entorno:
-
+> **Nota:** Con el fin de no obstaculizar la revisión de la actual prueba y agilizar la ejecución correcta de la aplicación se ha creado una base de datos temporal con credenciales netamente de prueba 
 ```env
 VITE_SUPABASE_URL=https://leeljdldzltybaxmozfg.supabase.co     # ← URL de tu instancia Supabase
 VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxlZWxqZGxkemx0eWJheG1vemZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc0MTkyNjcsImV4cCI6MjA2Mjk5NTI2N30.n2r3ZU2-jnAvMJuR_HGH9VZRsg8nSARgukSQbtYNJd0  # ← Clave pública (anon key)
 ```
-
-> **Nota:** Para esta prueba puedes utilizar una clave pública de una base de datos **demo**:
 >
 > Esta clave proporciona **una conexión limitada** solo para pruebas y **no compromete la seguridad**.
 
