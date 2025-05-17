@@ -4,6 +4,9 @@ Aplicación web para la **gestión de tareas** desarrollada como parte de una pr
 
 ---
 
+---
+Aplicacion desplegada en Vercel: https://task-manager-test-pied.vercel.app/
+
 ## 🚀 Tecnologías Utilizadas
 
 - ⚛️ **React** – Librería principal para construir la interfaz de usuario.
@@ -131,6 +134,66 @@ npx cypress open
 
 ---
 
+# 📘 Instrucciones de uso de la aplicación de gestión de tareas
+
+Esta aplicación permite crear y gestionar tareas por proyectos. A continuación, se detallan las vistas principales y cómo interactuar con ellas paso a paso.
+
+---
+
+## 🏠 Vista principal: Dashboard
+
+- Muestra una **vista resumida de tareas pendientes y completadas**.
+- Desde esta vista se puede navegar hacia los distintos **proyectos creados**.
+- El **modo oscuro** o claro puede alternarse usando el **switch ubicado en la parte superior derecha**.
+
+---
+
+## 📁 Vista de Proyecto
+
+### ➕ Crear un nuevo proyecto
+1. Haz clic en el botón **"Nuevo Proyecto"**.
+2. Se mostrará un formulario con campos para el **nombre del proyecto**.
+3. Puedes **guardar** el nuevo proyecto o **cancelar** la operación.
+
+### ✏️ Editar nombre del proyecto
+- Haz clic sobre el ícono de **editar** (🖉) o directamente sobre el **nombre del proyecto**.
+- Se habilitará la edición.
+- Puedes **guardar** los cambios con el ícono ✅ o **cancelarlos** con ❌.
+
+---
+
+## ✅ Gestión de Tareas
+
+### ➕ Añadir una nueva tarea
+1. Haz clic en el botón **"Añadir tarea"**.
+2. Aparecerá un campo de texto donde puedes **escribir el título** de la tarea.
+3. Usa los botones para **guardar** (✅) o **cancelar** (❌) la nueva tarea.
+
+### 👁️ Ver y editar detalles de una tarea
+- Haz clic sobre una tarea para abrir el **modal de detalles**.
+- Dentro del modal podrás:
+  - **Marcar la tarea como completada**.
+  - **Seleccionar prioridad**.
+  - **Asignar una fecha límite**.
+  - **Añadir o modificar una descripción**.
+
+#### ✏️ Edición de campos dentro de la tarea
+- Cada campo editable (prioridad, descripción) muestra íconos para:
+  - **Guardar cambios** (✅).
+  - **Cancelar edición** (❌).
+- Los cambios **solo se verán reflejados en la lista de tareas si se guardan** desde el ícono principal de **guardar** (💾) dentro del modal.
+
+### 🗑️ Eliminar tarea
+- Haz clic en el **ícono de papelera (🗑️)** o en el botón rojo dentro del modal.
+
+---
+
+## 🌙 Modo oscuro / claro
+
+- Para alternar entre **modo oscuro** y **modo claro**, utiliza el **switch** disponible en la **esquina superior derecha**.
+
+---
+
 ## 📌 Conclusión
 
 Este proyecto demuestra la capacidad de construir una **aplicación moderna**, funcional y bien organizada en React, con un stack simple pero potente, ideal para MVPs, pruebas técnicas o incluso producción.
@@ -143,3 +206,5 @@ Se priorizó:
 - 🔹 Escalabilidad futura.
 
 ---
+
+
