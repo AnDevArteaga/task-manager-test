@@ -56,8 +56,8 @@ Las operaciones se manejan mediante APIs directas usando la librería oficial `@
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/taskmanager.git
-cd taskmanager
+git clone https://github.com/AnDevArteaga/task-manager-test.git
+cd task-manager-test
 ```
 
 ### 2. Instalar dependencias
