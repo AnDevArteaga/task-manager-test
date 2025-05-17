@@ -1,7 +1,7 @@
 # 📝 TaskManager – Prueba Técnica
 
 Aplicación web para la **gestión de tareas** desarrollada como parte de una prueba técnica. Construida con un enfoque moderno, modular y escalable, utilizando **React**, **TypeScript**, **Tailwind CSS** y **Supabase**.
-
+Se entregó la prueba de acuerdo con los requerimientos establecidos. Se priorizó la estabilidad, claridad del código. Se identificaron posibles mejoras como autenticación de usuarios, pero no fueron implementadas para mantener el enfoque original del reto.
 ---
 
 ---
