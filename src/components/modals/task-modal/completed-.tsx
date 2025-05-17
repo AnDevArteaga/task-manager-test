@@ -1,4 +1,4 @@
-import { CheckCircle, Clock } from "lucide-react";
+import { ArrowLeft, CheckCircle, Clock } from "lucide-react";
 
 // Completed status component
 interface Props {
@@ -18,7 +18,6 @@ export default function CompletedStatus({ completed, setCompleted }: Props) {
                 }`}
                 onClick={() => setCompleted(!completed)}
                 data-cy="modal-complete-checkbox"
-
             >
                 {completed
                     ? (
@@ -31,9 +30,19 @@ export default function CompletedStatus({ completed, setCompleted }: Props) {
                             <Clock size={12} /> <span>Pendiente</span>
                         </>
                     )}
-                
             </div>
-            <span className="text-xs text-gray-700 dark:text-white ml-6">Marcar como completada</span>
+            <div
+                className="flex items-center gap-2 text-xs rounded-full transition-all duration-200 cursor-pointer ml-6"
+                onClick={() => setCompleted(!completed)}
+            >
+                <ArrowLeft
+                    size={16}
+                    className="text-gray-400 hover:text-gray-500 dark:text-white"
+                />
+                <span className="text-xs text-gray-700 dark:text-white hover:text-gray-500 ">
+                    Marcar como completada
+                </span>
+            </div>
         </div>
     );
 }
