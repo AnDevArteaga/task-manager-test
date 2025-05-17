@@ -163,6 +163,7 @@ Esta aplicación permite crear y gestionar tareas por proyectos. A continuación
 ---
 
 ## ✅ Gestión de Tareas
+- La lista de tareas implementa únicamente el orden por fecha de vencimiento, tal como fue solicitado en los requisitos. Este orden se representa visualmente mediante colores: rojo para tareas vencidas o del día, naranja para próximas (menos de 1.5 días), amarillo para vencimientos cercanos (hasta 5 días) y gris para tareas sin fecha o más lejanas. No se implementó un orden adicional por prioridad. Sin embargo, sí se incluye un sistema de filtros que permite al usuario seleccionar el tipo de filtro (estado o prioridad) y aplicar los criterios deseados para visualizar tareas específicas según esos campos.
 
 ### ➕ Añadir una nueva tarea
 1. Haz clic en el botón **"Añadir tarea"**.
