@@ -13,7 +13,7 @@ export default function DashboardPage() {
     <div className="max-w-4xl mx-auto p-4 bg-white dark:bg-background-dark dark:text-white">
       {/* Header simplificado */}
       <header className="mb-6">
-        <h1 className="text-xl font-medium text-gray-800 dark:text-white">Hola, Andrés 👋</h1>
+        <h1 className="text-xl font-medium text-gray-800 dark:text-white">Hola, Usuario 👋</h1>
         <p className="text-sm text-gray-500 dark:text-gray-300">Panel de gestión de tareas</p>
       </header>
 
