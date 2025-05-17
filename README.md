@@ -1,54 +1,145 @@
-# React + TypeScript + Vite
+# 📝 TaskManager – Prueba Técnica
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web para la **gestión de tareas** desarrollada como parte de una prueba técnica. Construida con un enfoque moderno, modular y escalable, utilizando **React**, **TypeScript**, **Tailwind CSS** y **Supabase**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Tecnologías Utilizadas
 
-## Expanding the ESLint configuration
+- ⚛️ **React** – Librería principal para construir la interfaz de usuario.
+- 🔐 **TypeScript** – Tipado estático para mayor robustez y mantenibilidad.
+- 🎨 **Tailwind CSS** – Framework de estilos para construir interfaces rápidas y responsivas.
+- 🛠️ **Supabase** – Backend como servicio (PostgreSQL + almacenamiento + tiempo real).
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🧱 Arquitectura y Estructura del Proyecto
+
+El proyecto fue diseñado siguiendo buenas prácticas de arquitectura frontend:
+
+- ✅ **Componentes reutilizables de UI**: botones, inputs, selects, textareas, modales, etc.
+- ✅ **Hooks personalizados**: para separar responsabilidades como lógica de tareas, proyectos, notificaciones, etc.
+- ✅ **Context API**: para manejo global de estados como tareas y proyectos.
+- ✅ **Servicios desacoplados**: peticiones a Supabase organizadas por dominio en la carpeta `/services`.
+- ✅ **Enrutamiento con React Router**: navegación fluida entre tareas, proyectos, dashboard, etc.
+- ✅ **Modo oscuro**: soporte completo con Tailwind y persistencia con `localStorage`.
+- ✅ **Notificaciones temporales**: feedback visual al crear tareas o realizar acciones.
+- ✅ **E2E con Cypress**: pruebas de flujo para tareas, temas y proyectos.
+
+---
+
+## 🔐 Autenticación
+
+Esta prueba **no requería autenticación**, por lo tanto, la aplicación es de **acceso libre**.
+
+> En caso de necesitar escalabilidad para múltiples usuarios, se puede integrar fácilmente:
+>
+> - Supabase Auth (recomendado para mantener la misma tecnología)
+> - Firebase Auth
+> - Auth0
+> - Clerk, entre otros
+
+---
+
+## 🧪 Base de Datos
+
+Se utilizó **Supabase** como backend para almacenamiento y gestión de datos (tareas y proyectos).  
+Las operaciones se manejan mediante APIs directas usando la librería oficial `@supabase/supabase-js`.
+
+---
+
+## 📦 Instalación y Ejecución
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/tu-usuario/taskmanager.git
+cd taskmanager
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Instalar dependencias
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm install
 ```
+
+### 3. Crear archivo `.env`
+
+Crea un archivo `.env` en la raíz del proyecto y agrega las siguientes variables de entorno:
+
+```env
+VITE_SUPABASE_URL=https://leeljdldzltybaxmozfg.supabase.co     # ← URL de tu instancia Supabase
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxlZWxqZGxkemx0eWJheG1vemZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc0MTkyNjcsImV4cCI6MjA2Mjk5NTI2N30.n2r3ZU2-jnAvMJuR_HGH9VZRsg8nSARgukSQbtYNJd0  # ← Clave pública (anon key)
+```
+
+> **Nota:** Para esta prueba puedes utilizar una clave pública de una base de datos **demo**:
+>
+> Esta clave proporciona **una conexión limitada** solo para pruebas y **no compromete la seguridad**.
+
+---
+
+### 4. Ejecutar en modo desarrollo
+
+```bash
+npm run dev
+```
+
+La aplicación estará disponible en: [http://localhost:5173](http://localhost:5173)
+
+---
+
+## 📁 Estructura del Proyecto
+
+```
+📁 src/
+├── components/          # Componentes de UI reutilizables
+├── context/             # Contextos globales (tareas, proyectos)
+├── hooks/               # Hooks personalizados
+├── interfaces/          # Tipos e interfaces TypeScript
+├── pages/               # Vistas principales (dashboard, tareas, proyectos)
+├── router/              # Configuración de rutas con React Router
+├── services/            # Servicios para Supabase
+├── styles/              # Estilos globales
+└── types/               # Tipos y estructuras auxiliares
+```
+
+---
+
+## 🧪 Testing (E2E con Cypress)
+
+Se implementaron pruebas automatizadas con **Cypress** para asegurar funcionalidad básica:
+
+- ✅ Crear y eliminar tareas.
+- ✅ Alternar entre modo claro/oscuro.
+- ✅ Crear y listar proyectos.
+
+### Ejecutar pruebas Cypress:
+
+```bash
+npx cypress open
+```
+
+---
+
+## 📌 Decisiones Clave
+
+- 📌 Uso de **Context API** en lugar de Redux para evitar sobrecarga innecesaria.
+- 📌 Lógica dividida en **hooks reutilizables** para mantener el código limpio.
+- 📌 Uso de **Tailwind CSS** para consistencia visual y fácil personalización.
+- 📌 Backend **serverless** con Supabase para simplicidad y potencia sin servidor.
+- 📌 Pruebas E2E con **Cypress** como validación automática de flujos principales.
+
+---
+
+## 📌 Conclusión
+
+Este proyecto demuestra la capacidad de construir una **aplicación moderna**, funcional y bien organizada en React, con un stack simple pero potente, ideal para MVPs, pruebas técnicas o incluso producción.
+
+Se priorizó:
+
+- 🔹 Claridad en la estructura del código.
+- 🔹 Separación de responsabilidades.
+- 🔹 Experiencia de usuario fluida.
+- 🔹 Escalabilidad futura.
+
+---
