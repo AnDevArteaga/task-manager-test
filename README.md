@@ -1,7 +1,7 @@
 # 📝 TaskManager – Prueba Técnica
 
 Aplicación web para la **gestión de tareas** desarrollada como parte de una prueba técnica. Construida con un enfoque moderno, modular y escalable, utilizando **React**, **TypeScript**, **Tailwind CSS** y **Supabase**.
-
+Se entregó la prueba de acuerdo con los requerimientos establecidos. Se priorizó la estabilidad, claridad del código. Se identificaron posibles mejoras como autenticación de usuarios, pero no fueron implementadas para mantener el enfoque original del reto.
 ---
 
 ---
@@ -69,15 +69,15 @@ npm install
 ### 3. Crear archivo `.env`
 
 Crea un archivo `.env` en la raíz del proyecto y agrega las siguientes variables de entorno:
-
+> **Nota:** Para facilitar la revisión de esta prueba técnica, se ha configurado una base de datos temporal en Supabase, junto con credenciales de demostración.
+Estas claves públicas permiten una conexión limitada y controlada, y serán invalidadas tras la evaluación.
+No comprometen la seguridad ni exponen información sensible.
+> 
 ```env
 VITE_SUPABASE_URL=https://leeljdldzltybaxmozfg.supabase.co     # ← URL de tu instancia Supabase
 VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxlZWxqZGxkemx0eWJheG1vemZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc0MTkyNjcsImV4cCI6MjA2Mjk5NTI2N30.n2r3ZU2-jnAvMJuR_HGH9VZRsg8nSARgukSQbtYNJd0  # ← Clave pública (anon key)
 ```
-
-> **Nota:** Para esta prueba puedes utilizar una clave pública de una base de datos **demo**:
 >
-> Esta clave proporciona **una conexión limitada** solo para pruebas y **no compromete la seguridad**.
 
 ---
 
