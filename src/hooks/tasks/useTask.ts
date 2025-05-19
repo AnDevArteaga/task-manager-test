@@ -2,90 +2,62 @@ import { useEffect, useState } from "react";
 import type { Task } from "../../interfaces/task.interface";
 import * as taskService from "../../services/task-service";
 import { toast } from "react-toastify";
+import { useLoadingTask } from "./useLoadingTask";
 
-//Hook to fetch tasks
-export function useTasksLogic(projectId: string) {
+// Custom hook to handle task operations within a project
+export function useTasks(projectId: string) {
     const [tasks, setTasks] = useState<Task[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const { withLoading, loadingState } = useLoadingTask();
 
-    // Fetch tasks
+    // Fetch tasks associated with the project
     const fetchTasks = async () => {
-        setLoading(true);
-        setError(null);
-        try {
+        await withLoading(async () => {
             const data = await taskService.getTasks(projectId);
             setTasks(data);
-        } catch {
-            setError("Error cargando tareas");
-        } finally {
-            setLoading(false);
-        }
+        }, "Error cargando tareas", "loadingAllTasks");
     };
 
-    // Add a new task
+    // Create a new task
     const addTask = async (task: Omit<Task, "id" | "created_at">) => {
-        setLoading(true);
-        setError(null);
-        try {
+        await withLoading(async () => {
             const newTask = await taskService.createTask(task);
             setTasks((prev) => [newTask, ...prev]);
             toast.success("Tarea creada correctamente");
-        } catch {
-            setError("Error creando tarea");
-            toast.error("Error creando tarea");
-        } finally {
-            setLoading(false);
-        }
+        }, "Error creando tarea", "loadingForAddTask");
     };
 
-    // Update a task
+    // Update a task by ID
     const updateTask = async (
         id: string,
-        updates: Partial<Omit<Task, "id" | "project_id" | "created_at">>,
+        updates: Partial<Omit<Task, "id" | "project_id" | "created_at">>
     ) => {
-        setLoading(true);
-        setError(null);
-        try {
+        await withLoading(async () => {
             const updated = await taskService.updateTask(id, updates);
             setTasks((prev) => prev.map((t) => (t.id === id ? updated : t)));
             toast.success("Tarea actualizada correctamente");
-        } catch {
-            setError("Error actualizando tarea");
-            toast.error("Error actualizando tarea");
-        } finally {
-            setLoading(false);
-        }
+        }, "Error actualizando tarea", "loadingForUpdateTask");
     };
 
-    // Delete a task
+    // Delete a task by ID
     const deleteTask = async (id: string) => {
-        setLoading(true);
-        setError(null);
-        try {
+        await withLoading(async () => {
             await taskService.deleteTask(id);
             setTasks((prev) => prev.filter((t) => t.id !== id));
             toast.success("Tarea eliminada correctamente");
-        } catch {
-            setError("Error eliminando tarea");
-            toast.error("Error eliminando tarea");
-        } finally {
-            setLoading(false);
-        }
+        }, "Error eliminando tarea", "loadingForDeleteTask");
     };
 
-    // Fetch tasks on mount
+    // Fetch tasks when project ID changes
     useEffect(() => {
         if (projectId) fetchTasks();
     }, [projectId]);
 
     return {
         tasks,
-        loading,
-        error,
         fetchTasks,
         addTask,
         updateTask,
         deleteTask,
+        loadingState,
     };
 }

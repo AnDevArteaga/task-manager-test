@@ -1,13 +1,13 @@
 import type { ReactNode } from "react";
 import { ProjectsContext } from "./project-context";
-import { useProjectsLogic } from "../../hooks/projects/useFetchingProject";
+import { useFetchingProject } from "../../hooks/projects/useFetchingProject";
 
 interface ProjectsProviderProps {
     children: ReactNode;
 }
 
 export const ProjectsProvider = ({ children }: ProjectsProviderProps) => {
-    const projectsState = useProjectsLogic();
+    const projectsState = useFetchingProject();
 
     return (
         <ProjectsContext.Provider value={projectsState}>

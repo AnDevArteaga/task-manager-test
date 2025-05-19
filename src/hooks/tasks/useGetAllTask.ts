@@ -8,22 +8,26 @@ export function useTaskStats() {
     const [pending, setPending] = useState(0);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const loadStats = async () => {
-            setLoading(true);
-            const tasks: Task[] = await getAllTasks();
+    const countCompletedTasks = (tasks: Task[]) =>
+        tasks.filter((t) => t.status === "Completada").length;
 
-            const completedTasks = tasks.filter((t) =>
-                t.status === "Completada"
-            ).length;
-            const pendingTasks =
-                tasks.filter((t) => t.status !== "Completada").length;
+    const countPendingTasks = (tasks: Task[]) =>
+        tasks.filter((t) => t.status !== "Completada").length;
 
-            setCompleted(completedTasks);
-            setPending(pendingTasks);
+    const loadStats = async () => {
+        setLoading(true);
+        try {
+            const tasks = await getAllTasks();
+            setCompleted(countCompletedTasks(tasks));
+            setPending(countPendingTasks(tasks));
+        } catch (error) {
+            console.error("Error al cargar las tareas:", error);
+        } finally {
             setLoading(false);
-        };
+        }
+    };
 
+    useEffect(() => {
         loadStats();
     }, []);
 

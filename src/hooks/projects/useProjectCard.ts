@@ -1,66 +1,63 @@
 import { useEffect, useRef, useState } from "react";
 import type { Project } from "../../interfaces/project.interface";
 
-
-//Hook to handler project card
+// Props for handling actions on the project card
 interface UseProjectCardLogicProps {
     project: Project;
     onUpdateProject: (id: string, name: string) => Promise<void>;
     onDeleteProject: (id: string) => Promise<void>;
 }
 
+// Hook to encapsulate logic for a single project card
 export function useProjectCardLogic({
     project,
     onUpdateProject,
     onDeleteProject,
 }: UseProjectCardLogicProps) {
     const [modalTaskId, setModalTaskId] = useState<string | null>(null);
-    const [addingTask, setAddingTask] = useState(false);
-    const [editing, setEditing] = useState(false);
-    const [nameInput, setNameInput] = useState(project.name);
-    const [confirmOpenPopup, setConfirmOpenPopup] = useState(false);
+    const [isAddingTask, setIsAddingTask] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [projectName, setProjectName] = useState(project.name);
+    const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-    // Auto-resize textarea based on content
+    // Resize textarea dynamically while editing
     useEffect(() => {
-        if (textareaRef.current && editing) {
+        if (textareaRef.current && isEditing) {
             textareaRef.current.style.height = "auto";
             textareaRef.current.style.height =
                 `${textareaRef.current.scrollHeight}px`;
         }
-    }, [nameInput, editing]);
+    }, [projectName, isEditing]);
 
-    // Start editing when clicking on the name card
-    const startEdit = () => {
-        setEditing(true);
-        setNameInput(project.name);
-        // Esperar a que el textarea esté renderizado para hacer focus
-        setTimeout(() => {
-            if (textareaRef.current) {
-                textareaRef.current.focus();
-            }
-        }, 0);
+    // Enter edit mode and focus textarea
+    const startEditing = () => {
+        setIsEditing(true);
+        setProjectName(project.name);
+        setTimeout(() => textareaRef.current?.focus(), 0); // Ensure textarea is rendered
     };
 
-    // Save changes
+    // Save edited project name if valid and changed
     const saveEdit = async () => {
-        if (nameInput.trim() && nameInput.trim() !== project.name) {
-            await onUpdateProject(project.id, nameInput.trim());
+        const trimmed = projectName.trim();
+        if (trimmed && trimmed !== project.name) {
+            await onUpdateProject(project.id, trimmed);
         }
-        setEditing(false);
+        setIsEditing(false);
     };
 
-    // Cancel changes
+    // Cancel editing and revert name
     const cancelEdit = () => {
-        setEditing(false);
-        setNameInput(project.name);
+        setIsEditing(false);
+        setProjectName(project.name);
     };
 
-    // Handle delete project
+    // Delete project
     const handleDelete = async () => {
         await onDeleteProject(project.id);
     };
 
+    // Handle Enter (submit) and Escape (cancel) key actions
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
@@ -73,18 +70,18 @@ export function useProjectCardLogic({
     return {
         modalTaskId,
         setModalTaskId,
-        addingTask,
-        setAddingTask,
-        editing,
-        nameInput,
-        setNameInput,
-        textareaRef,
-        startEdit,
+        isAddingTask,
+        setIsAddingTask,
+        isEditing,
+        startEditing,
         saveEdit,
         cancelEdit,
-        handleDelete,
+        projectName,
+        setProjectName,
+        textareaRef,
         handleKeyDown,
-        setConfirmOpenPopup,
-        confirmOpenPopup,
+        handleDelete,
+        isConfirmPopupOpen,
+        setIsConfirmPopupOpen,
     };
 }

@@ -11,19 +11,18 @@ export default function DashboardPage() {
     <Layout title="Taskly | Dashboard">  
     
     <div className="max-w-4xl mx-auto p-4 bg-white dark:bg-background-dark dark:text-white">
-      {/* Header simplificado */}
-      <header className="mb-6">
+      <section className="mb-6">
         <h1 className="text-xl font-medium text-gray-800 dark:text-white">Hola, Usuario 👋</h1>
         <p className="text-sm text-gray-500 dark:text-gray-300">Panel de gestión de tareas</p>
-      </header>
+      </section>
 
-      {/* Grid de contenido */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Tarjeta de proyectos */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div 
           onClick={() => navigate("/projects")}
           className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-4 rounded-lg shadow hover:shadow-md transition-all cursor-pointer"
-        >
+          role="button"
+          aria-label="Ir a proyectos"
+       >
           <div className="flex items-center mb-2">
             <Folder size={18} />
             <h2 className="ml-2 font-medium">Proyectos</h2>
@@ -31,7 +30,6 @@ export default function DashboardPage() {
           <p className="text-xs opacity-80">Ver proyectos activos</p>
         </div>
 
-        {/* Indicadores */}
       <IndicatorCard
         title="Tareas completadas"
         value={loading ? "..." : completed.toString()}
@@ -42,8 +40,7 @@ export default function DashboardPage() {
         value={loading ? "..." : pending.toString()}
         icon={<ListTodo size={18} />}
       />
-      </div>
-              {/* Información de la app */}
+      </section>
         <section className="mt-12 bg-gray-50 rounded-lg p-6 border border-gray-200 dark:bg-gray-900 dark:border-gray-900">
           <h2 className="text-SM font-semibold mb-4 text-gray-800 dark:text-white">TASKLY</h2>
           <p className="text-gray-700 leading-relaxed text-xs dark:text-white">

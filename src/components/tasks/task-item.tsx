@@ -1,6 +1,6 @@
-import type { Task } from "../interfaces/task.interface";
+import type { Task } from "../../interfaces/task.interface";
 import { AlertCircle } from "lucide-react";
-import { useTaskStyles } from "../hooks/tasks/useTaskItem";
+import { useTaskStylesItem } from "../../hooks/tasks/useTaskStyles";
 
 interface Props {
     task: Task;
@@ -10,7 +10,7 @@ interface Props {
 // Task item component for displaying tasks
 
 export default function TaskItem({ task, onClick }: Props) {
-    const { StatusIcon, priorityLevel, dueDateStyles } = useTaskStyles(task);
+    const { StatusIcon, priorityLevel, dueDateStyles } = useTaskStylesItem(task);
 
     return (
         <div
@@ -22,6 +22,9 @@ export default function TaskItem({ task, onClick }: Props) {
       `}
             title={`${task.title} - ${task.status}`}
             data-cy="task-item"
+            role="region"
+            aria-label={`Tarea ${task.title}`}
+            tabIndex={0}
         >
             <div className="flex flex-col">
                 <div className="flex items-start justify-between">

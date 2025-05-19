@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { TasksContext } from "./task-context";
-import { useTasksLogic } from "../../hooks/tasks/useTask";
+import { useTasks } from "../../hooks/tasks/useTask";
 
 interface TasksProviderProps {
     projectId: string;
@@ -8,7 +8,7 @@ interface TasksProviderProps {
 }
 
 export const TasksProvider = ({ projectId, children }: TasksProviderProps) => {
-    const tasksState = useTasksLogic(projectId);
+    const tasksState = useTasks(projectId);
 
     return (
         <TasksContext.Provider value={{...tasksState, projectId}}>

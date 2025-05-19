@@ -12,8 +12,7 @@ export interface Task {
 export interface TasksContextType {
     tasks: Task[];
     projectId: string;
-    loading: boolean;
-    error: string | null;
+    loadingState: LoadingState;
     fetchTasks: () => Promise<void>;
     addTask: (task: Omit<Task, "id" | "created_at">) => Promise<void>;
     updateTask: (
@@ -21,4 +20,13 @@ export interface TasksContextType {
         updates: Partial<Omit<Task, "id" | "project_id" | "created_at">>,
     ) => Promise<void>;
     deleteTask: (id: string) => Promise<void>;
+}
+
+
+// Interface to define all loading states
+export interface LoadingState {
+    loadingAllTasks: boolean;
+    loadingForAddTask: boolean;
+    loadingForUpdateTask: boolean;
+    loadingForDeleteTask: boolean;
 }

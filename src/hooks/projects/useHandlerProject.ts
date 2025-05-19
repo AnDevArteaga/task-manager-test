@@ -1,74 +1,81 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProjectsContext } from "../../context/projects/useProjectContext";
+import { toast } from "react-toastify";
 
-//Hook to handlers project
+// Custom hook to manage project operations and UI state
 export function useProjectsManager() {
     const {
         projects,
         loading,
-        error,
         addProject,
         updateProject,
         deleteProject,
     } = useProjectsContext();
 
     const [newProjectName, setNewProjectName] = useState("");
-    const [adding, setAdding] = useState(false);
-    const [isAddingProject, setIsAddingProject] = useState(false);
+    const [isFormVisible, setIsFormVisible] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const navigate = useNavigate();
 
-    // Handle add project
+    // Handle the creation of a new project
     const handleAddProject = async () => {
-        if (!newProjectName.trim()) return;
+        const trimmedName = newProjectName.trim();
+        if (!trimmedName) return;
 
+        setIsSubmitting(true);
         try {
-            setIsAddingProject(true);
-            await addProject(newProjectName.trim());
+            await addProject(trimmedName);
             setNewProjectName("");
-            setAdding(false);
-        } catch (error) {
-            console.error("Error al añadir proyecto:", error);
+            setIsFormVisible(false);
+        } catch (err) {
+            console.error("Failed to add project:", err);
+            toast.error("Error al crear el proyecto");
         } finally {
-            setIsAddingProject(false);
+            setIsSubmitting(false);
         }
     };
 
-    // Only edit name if project
-    const onEditNameProject = async (id: string, name: string) => {
-        await updateProject(id, name);
+    // Handle project name update
+    const handleEditProjectName = async (id: string, name: string) => {
+        try {
+            await updateProject(id, name);
+        } catch (err) {
+            console.error("Failed to update project:", err);
+            toast.error("Error al actualizar el proyecto");
+        }
     };
 
-    // Only delete if project
-    const onDeleteProject = async (id: string) => {
-        await deleteProject(id);
+    // Handle project deletion
+    const handleDeleteProject = async (id: string) => {
+        try {
+            await deleteProject(id);
+        } catch (err) {
+            console.error("Failed to delete project:", err);
+            toast.error("Error al eliminar el proyecto");
+        }
     };
 
-    // Go back to back route
+    // Navigate back to the previous route
     const goBack = () => {
         navigate(-1);
     };
 
-// Build array with projects + slot to add project at the end
+    // Add a null slot at the end to render an "add new project" UI
     const projectsWithAddSlot = [...projects, null];
 
     return {
         projects,
         loading,
-        error,
-        addProject,
-        updateProject,
-        deleteProject,
         newProjectName,
         setNewProjectName,
-        adding,
-        setAdding,
-        isAddingProject,
-        setIsAddingProject,
-        navigate,
+        isFormVisible,
+        setIsFormVisible,
+        isSubmitting,
         handleAddProject,
-        onEditNameProject,
-        onDeleteProject,
+        handleEditProjectName,
+        handleDeleteProject,
         goBack,
         projectsWithAddSlot,
     };

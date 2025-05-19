@@ -3,83 +3,69 @@ import type { Project } from "../../interfaces/project.interface";
 import * as projectService from "../../services/project-service";
 import { toast } from "react-toastify";
 
-
-//Hook to fetch project
-export function useProjectsLogic() {
+// Custom hook to encapsulate project logic
+export function useFetchingProject() {
     const [projects, setProjects] = useState<Project[]>([]);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
 
-    //Fetch all projects
-    const fetchProjects = async () => {
+    // Utility to handle async operations with loading and error toast
+    const withLoading = async (
+        operation: () => Promise<void>,
+        errorMessage: string,
+    ) => {
         setLoading(true);
-        setError(null);
         try {
+            await operation();
+        } catch {
+            toast.error(errorMessage);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Fetch all projects from the API
+    const fetchProjects = async () => {
+        await withLoading(async () => {
             const data = await projectService.getProjects();
             setProjects(data);
-        } catch {
-            setError("Error loading projects");
-        } finally {
-            setLoading(false);
-        }
+        }, "Error al cargar proyectos");
     };
 
-    // Add a new project
+    // Create a new project
     const addProject = async (name: string) => {
-        setLoading(true);
-        setError(null);
-        try {
+        await withLoading(async () => {
             const newProject = await projectService.createProject(name);
-            setProjects((prev) => [...prev, newProject]); // Add new project to the list - allways with one copy of the array or state
+            setProjects((prev) => [...prev, newProject]); // Append new project
             toast.success("Proyecto creado correctamente");
-        } catch {
-            setError("Error creating project");
-            toast.error("Error creando proyecto");
-        } finally {
-            setLoading(false);
-        }
+        }, "Error creando proyecto");
     };
-    // Update a project
+
+    // Update an existing project
     const updateProject = async (id: string, name: string) => {
-        setLoading(true);
-        setError(null);
-        try {
+        await withLoading(async () => {
             const updated = await projectService.updateProject(id, name);
             setProjects((prev) => prev.map((p) => (p.id === id ? updated : p)));
             toast.success("Proyecto actualizado correctamente");
-        } catch {
-            setError("Error updating project");
-            toast.error("Error actualizando proyecto");
-        } finally {
-            setLoading(false);
-        }
+        }, "Error actualizando proyecto");
     };
+
     // Delete a project
     const deleteProject = async (id: string) => {
-        setLoading(true);
-        setError(null);
-        try {
+        await withLoading(async () => {
             await projectService.deleteProject(id);
             setProjects((prev) => prev.filter((p) => p.id !== id));
             toast.success("Proyecto eliminado correctamente");
-        } catch {
-            setError("Error eliminando proyecto");
-            toast.error("Error eliminando proyecto");
-        } finally {
-            setLoading(false);
-        }
+        }, "Error eliminando proyecto");
     };
 
+    // Load projects on initial render
     useEffect(() => {
         fetchProjects();
     }, []);
 
-    
-
     return {
         projects,
         loading,
-        error,
         fetchProjects,
         addProject,
         updateProject,

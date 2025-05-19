@@ -11,9 +11,9 @@ import {
 import { useTaskNotifications } from "../notis";
 import type { Task } from "../../interfaces/task.interface";
 
-//Hook to handle tasks list
+// Hook to handle task list UI logic and filters
 export function useTasksListLogic() {
-    const { tasks, addTask, projectId } = useTasksContext();
+    const { tasks, addTask, projectId, loadingState } = useTasksContext();
     useTaskNotifications(tasks);
 
     const [newTaskTitle, setNewTaskTitle] = useState("");
@@ -21,24 +21,32 @@ export function useTasksListLogic() {
     const [filterEstado, setFilterEstado] = useState<Estado>("Todos");
     const [filterPrioridad, setFilterPrioridad] = useState<Prioridad>("Todos");
 
-    const handleAddTask = async () => {
-        if (!newTaskTitle.trim()) return;
+
+
+// Add a new task
+const handleAddTask = async () => {
+    if (!newTaskTitle.trim()) return; // Prevent adding task if title is empty
+
+    try {
+        // Call addTask with the necessary task data
         await addTask({
             project_id: projectId || "",
             title: newTaskTitle.trim(),
             status: "Pendiente",
             priority: "Sin prioridad",
         });
-        setNewTaskTitle("");
-    };
+        setNewTaskTitle(""); // Clear input field after task is added
+    } catch (error) {
+        // Error handling already done in addTask, this block can be omitted
+        console.error("Error adding task:", error);
+    }
+};
 
-    // Sort by date first and then put completed at the end
+    // Sort tasks: incomplete first, then by due date
     const sortTasks = (a: Task, b: Task) => {
-        //If one is completed and the other is not, the completed one goes to the end
         if (a.status === "Completada" && b.status !== "Completada") return 1;
         if (a.status !== "Completada" && b.status === "Completada") return -1;
 
-        // Both equal in completed, sort by date
         if (!a.due_date && !b.due_date) return 0;
         if (!a.due_date) return 1;
         if (!b.due_date) return -1;
@@ -46,22 +54,20 @@ export function useTasksListLogic() {
         return new Date(a.due_date).getTime() - new Date(b.due_date).getTime();
     };
 
-    // Filter and sort
+    // Apply filters and sorting
     const filteredTasks = tasks
         .filter((task) => {
-            const estadoOk = filterEstado === "Todos" ||
-                task.status === filterEstado;
-            const prioridadOk = filterPrioridad === "Todos" ||
-                task.priority === filterPrioridad;
-            return estadoOk && prioridadOk;
+            const estadoMatch = filterEstado === "Todos" || task.status === filterEstado;
+            const prioridadMatch = filterPrioridad === "Todos" || task.priority === filterPrioridad;
+            return estadoMatch && prioridadMatch;
         })
         .sort(sortTasks);
 
-        useEffect(() => {
-    // Reset filter when filter type changes
-    setFilterEstado("Todos");
-    setFilterPrioridad("Todos");
-}, [filterType]);
+    // Reset filters when filter type changes
+    useEffect(() => {
+        setFilterEstado("Todos");
+        setFilterPrioridad("Todos");
+    }, [filterType]);
 
     return {
         newTaskTitle,
@@ -77,5 +83,6 @@ export function useTasksListLogic() {
         prioridadOptions,
         filteredTasks,
         handleAddTask,
+        loadingState,     
     };
 }

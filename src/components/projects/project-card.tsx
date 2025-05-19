@@ -1,12 +1,12 @@
 import { useRef } from "react";
-import type { Project } from "../interfaces/project.interface";
-import { TasksProvider } from "../context/tasks/task-provider";
-import TasksList from "./task-list";
-import ModalTarea from "./modals/task-modal";
-import AutoResizeTextArea from "./ui/text-area";
+import type { Project } from "../../interfaces/project.interface";
+import { TasksProvider } from "../../context/tasks/task-provider";
+import TasksList from "../tasks/task-list";
+import ModalTarea from "../modals/task-modal/task-modal";
+import AutoResizeTextArea from "../ui/text-area";
 import { Edit, Save, Trash, X } from "lucide-react";
-import { useProjectCardLogic } from "../hooks/projects/useProjectCard";
-import ConfirmPopover from "./ui/tooltip-confirm";
+import { useProjectCardLogic } from "../../hooks/projects/useProjectCard";
+import ConfirmPopover from "../ui/tooltip-confirm";
 
 interface Props {
     project: Project;
@@ -19,39 +19,43 @@ interface Props {
 export default function ProjectCard(
     { project, onUpdateProject, onDeleteProject }: Props,
 ) {
-        const ref = useRef(null);
+    const ref = useRef(null);
 
     const {
         modalTaskId,
         setModalTaskId,
-        addingTask,
-        setAddingTask,
-        editing,
-        nameInput,
-        setNameInput,
-        startEdit,
+        isAddingTask,
+        setIsAddingTask,
+        isEditing,
+        startEditing,
         saveEdit,
         cancelEdit,
-        handleDelete,
+        projectName,
+        setProjectName,
         handleKeyDown,
-        setConfirmOpenPopup,
-        confirmOpenPopup,
+        handleDelete,
+        isConfirmPopupOpen,
+        setIsConfirmPopupOpen,
     } = useProjectCardLogic({
         project,
         onUpdateProject,
         onDeleteProject,
     });
+
     return (
-        <div className="bg-white rounded-lg shadow-md p-5 min-w-[300px] w-full flex flex-wrap h-[fit-content] border border-gray-300 dark:bg-gray-900 dark:border-gray-800" data-cy="project-card">                                             
+        <div
+            className="bg-white rounded-lg shadow-md p-5 min-w-[300px] w-full flex flex-wrap h-[fit-content] border border-gray-300 dark:bg-gray-900 dark:border-gray-800"
+            data-cy="project-card"
+        >
             <div className="mb-4 w-full">
-                {editing
+                {isEditing
                     ? (
                         <div className="w-full">
                             <div className="flex items-start">
                                 <AutoResizeTextArea
-                                    value={nameInput}
+                                    value={projectName}
                                     onChange={(e) =>
-                                        setNameInput(e.target.value)}
+                                        setProjectName(e.target.value)}
                                     onKeyDown={handleKeyDown}
                                     className="flex-grow border-b border-gray-300 focus:border-blue-500 focus:outline-none py-2 text-lg font-medium mr-2 dark:border-gray-700 dark:text-white"
                                     autoFocus
@@ -84,9 +88,9 @@ export default function ProjectCard(
                                     className="cursor-pointer font-bold text-xl text-gray-800 hover:text-blue-600 transition-colors break-words dark:text-white"
                                     tabIndex={0}
                                     onKeyDown={(e) => {
-                                        if (e.key === "Enter") startEdit();
+                                        if (e.key === "Enter") startEditing();
                                     }}
-                                    onClick={startEdit}
+                                    onClick={startEditing}
                                     style={{ wordBreak: "break-word" }}
                                 >
                                     {project.name}
@@ -96,26 +100,26 @@ export default function ProjectCard(
                             <div className="flex flex-row">
                                 <Edit
                                     size={18}
-                                    onClick={startEdit}
+                                    onClick={startEditing}
                                     className="text-gray-500 hover:text-blue-600 transition-colors flex-shrink-0 cursor-pointer dark:text-white"
                                 />
 
                                 <Trash
                                     size={18}
-                                    onClick={() => setConfirmOpenPopup(true)}
+                                    onClick={() => setIsConfirmPopupOpen(true)}
                                     className="text-red-600 hover:text-red-800 transition-colors ml-2 flex-shrink-0 cursor-pointer dark:text-white"
                                     ref={ref}
                                     data-cy="project-delete-button"
-                                    
                                 />
                                 <ConfirmPopover
-                                    isOpen={confirmOpenPopup}
+                                    isOpen={isConfirmPopupOpen}
                                     message="¿Eliminar este proyecto?"
                                     onConfirm={() => {
                                         handleDelete();
-                                        setConfirmOpenPopup(false);
+                                        setIsConfirmPopupOpen(false);
                                     }}
-                                    onCancel={() => setConfirmOpenPopup(false)}
+                                    onCancel={() =>
+                                        setIsConfirmPopupOpen(false)}
                                 />
                             </div>
                         </div>
@@ -128,8 +132,8 @@ export default function ProjectCard(
                         <div className="flex-grow overflow-x-auto">
                             <TasksList
                                 onOpenTask={setModalTaskId}
-                                addingTask={addingTask}
-                                setAddingTask={setAddingTask}
+                                addingTask={isAddingTask}
+                                setAddingTask={setIsAddingTask}
                             />
                         </div>
                     </div>

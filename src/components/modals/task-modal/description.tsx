@@ -1,4 +1,4 @@
-import { AlignLeft, Check, Edit, FileText, X } from "lucide-react";
+import { AlignLeft, Check, Edit, FileText } from "lucide-react";
 import Button from "../../ui/button";
 
 interface Props {
@@ -7,7 +7,6 @@ interface Props {
     textareaDescRef: React.RefObject<HTMLTextAreaElement | null>;
     setEditingDescription: (b: boolean) => void;
     editingDescription: boolean;
-    cancelDescriptionEdit: () => void;
 }
 
 // Description component
@@ -18,7 +17,6 @@ export default function Description(
         textareaDescRef,
         setEditingDescription,
         editingDescription,
-        cancelDescriptionEdit,
     }: Props,
 ) {
     return (
@@ -38,15 +36,10 @@ export default function Description(
                             autoFocus
                             placeholder="Describe los detalles de esta tarea..."
                         />
-                        <div className="flex gap-2 mt-3 justify-end">
-                            <Button
-                                icon={X}
-                                iconSize={16}
-                                text="Cancelar"
-                                onClick={cancelDescriptionEdit}
-                                ariaLabel="Cancelar edición descripción"
-                                className="bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all duration-200 dark:text-white dark:hover:bg-gray-800 dark:bg-gray-700"
-                            />
+                        <div className="flex gap-2 mt-3 justify-end items-center">
+                            <span className="text-gray-700 dark:text-white text-xs">
+                                Recuerde guardar la descripción
+                            </span>
 
                             <Button
                                 icon={Check}

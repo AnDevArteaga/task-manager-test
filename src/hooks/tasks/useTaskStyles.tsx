@@ -1,5 +1,6 @@
-import { useMemo } from "react";
-import { CheckCircle, Clock } from "lucide-react";
+//Hook tsx to get task styles, need import icons from lucide-react
+import { type ReactNode, useMemo } from "react";
+import { AlertCircle, CheckCircle, Clock, Flag } from "lucide-react";
 
 interface Task {
     status: string;
@@ -8,7 +9,7 @@ interface Task {
 }
 
 //Hook to get task styles
-export const useTaskStyles = (task: Task) => {
+export const useTaskStylesItem = (task: Task ) => {
     const StatusIcon = useMemo(() => {
         return task.status === "Completada" ? CheckCircle : Clock;
     }, [task.status]);
@@ -86,9 +87,67 @@ export const useTaskStyles = (task: Task) => {
         }
     }, [task.status, task.due_date]);
 
+
     return {
         StatusIcon,
         priorityLevel,
         dueDateStyles,
+    };
+};
+
+
+export const useTaskStylesModal = () => {
+        const getPriorityColor = (prio: string): string => {
+        const map: Record<string, string> = {
+            Alta: "text-red-600 dark:text-red-200",
+            Media: "text-yellow-600 dark:text-yellow-200",
+            Baja: "text-green-600 dark:text-green-200",
+        };
+        return map[prio] || "text-gray-600 dark:text-gray-200";
+    };
+
+    const getPriorityBgColor = (prio: string): string => {
+        const map: Record<string, string> = {
+            Alta:
+                "bg-red-100 border-red-200 dark:bg-red-500/20 dark:border-red-400",
+            Media:
+                "bg-yellow-100 border-yellow-200 dark:bg-yellow-500/20 dark:border-yellow-400",
+            Baja:
+                "bg-green-100 border-green-200 dark:bg-green-500/20 dark:border-green-400",
+        };
+        return map[prio] ||
+            "bg-gray-100 border-gray-200 dark:bg-gray-800 dark:border-gray-700";
+    };
+
+    const getPriorityIcon = (prio: string): ReactNode => {
+        const map: Record<string, ReactNode> = {
+            Alta: (
+                <AlertCircle
+                    size={16}
+                    className="text-red-600 dark:text-red-400"
+                />
+            ),
+            Media: (
+                <Clock
+                    size={16}
+                    className="text-yellow-600 dark:text-yellow-400"
+                />
+            ),
+            Baja: (
+                <Flag
+                    size={16}
+                    className="text-green-600 dark:text-green-400"
+                />
+            ),
+        };
+        return map[prio] || (
+            <Flag size={16} className="text-gray-400 dark:text-gray-300" />
+        );
+    };
+
+    return {
+        getPriorityColor,
+        getPriorityBgColor,
+        getPriorityIcon,
     };
 };
